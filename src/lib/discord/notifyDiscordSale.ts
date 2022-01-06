@@ -58,11 +58,10 @@ export default async function notifyDiscordSale(
   });
 
   const embedMsg = new MessageEmbed({
-    type: "rich",
     color: 0xf0b042,
     title: nftData?.name,
     url: marketplace.itemURL(nftSale.token),
-    timestamp: nftSale?.soldAt,
+    timestamp: `${nftSale?.soldAt}`,
     fields: [
       {
         name: `Price`,
@@ -80,7 +79,7 @@ export default async function notifyDiscordSale(
       }
     ],
     image: {
-      url: nftData?.image,
+      url: `${nftData?.image}`,
       width: 1069,
       height: 1069,
     },
