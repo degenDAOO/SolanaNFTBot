@@ -3,6 +3,7 @@ import { parseNFTSaleOnTx } from "./helper";
 
 const magicEden: Marketplace = {
   name: "Magic Eden",
+  iconUrl: "https://www.magiceden.io/img/favicon.png",
   programId: "MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8",
   itemURL: (token: String) => `https://magiceden.io/item-details/${token}`,
   parseNFTSale(web3Conn, txResp): Promise<NFTSale | null> {
