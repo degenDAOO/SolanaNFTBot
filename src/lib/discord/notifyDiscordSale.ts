@@ -66,12 +66,6 @@ export default async function notifyDiscordSale(
       {
         name: `Price`,
         value: price,
-        inline: true
-      },
-      {
-        name: `Marketplace`,
-        value: marketplace.name,
-        inline: true
       },
       {
         name: `Buyer`,
