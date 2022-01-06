@@ -42,7 +42,7 @@ export default async function notifyDiscordSale(
     components: [
       {
         style: 5,
-        label: `View Solscan Transaction`,
+        label: `View Transaction`,
         url: `https://solscan.io/tx/${nftSale.transaction}`,
         disabled: false,
         type: 2
@@ -82,6 +82,10 @@ export default async function notifyDiscordSale(
       url: `${nftData?.image}`,
       width: 1069,
       height: 1069
+    },
+    author: {
+      name: marketplace.name,
+      url: marketplace.itemURL(nftSale.token),
     },
     footer: {
       text: `Sold on ${marketplace.name}`,
