@@ -13,7 +13,7 @@ export function getStatus() {
 }
 
 export function truncate(str: String){
-  return str.substring(6) + '&hellip;' + str.substring(-6);
+  return str.substring(0, 6) + '...' + str.substring(str.length - 6);
 };
 
 export default async function notifyDiscordSale(
@@ -58,14 +58,20 @@ export default async function notifyDiscordSale(
   });
 
   const embedMsg = new MessageEmbed({
-    color: 0xf0b042,
+    color: 0x028b3c,
     title: nftData?.name,
     url: marketplace.itemURL(nftSale.token),
     timestamp: `${nftSale?.soldAt}`,
     fields: [
       {
         name: `Price`,
-        value: price
+        value: price,
+        inline: true
+      },
+      {
+        name: `Marketplace`,
+        value: marketplace.name,
+        inline: true
       },
       {
         name: `Buyer`,
@@ -81,7 +87,7 @@ export default async function notifyDiscordSale(
     image: {
       url: `${nftData?.image}`,
       width: 1069,
-      height: 1069,
+      height: 1069
     },
     footer: {
       text: `Sold on ${marketplace.name}`,
