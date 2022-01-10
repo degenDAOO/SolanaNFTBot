@@ -35,7 +35,8 @@ export default async function notifyDiscordSale(
     nftSale.method === SaleMethod.Bid ? "(via bidding) " : ""
   }`;
 
-  const seller = nftSale.transfers[nftSale.transfers.length - 1]['to'];
+  // On Solanart Bid, no transaction given
+  const seller = (nftSale.transfers.length > 0) ? truncate(nftSale.transfers[nftSale.transfers.length - 1]['to']) : 'null';
 
   const actionRowMsg = new MessageActionRow({
     type: 1,
@@ -74,7 +75,7 @@ export default async function notifyDiscordSale(
       },
       {
         name: `Seller`,
-        value: `\`${truncate(seller)}\``,
+        value: seller,
         inline: true
       }
     ],
