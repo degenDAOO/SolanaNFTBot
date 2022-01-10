@@ -75,7 +75,7 @@ export default async function notifyDiscordSale(
       },
       {
         name: `Seller`,
-        value: seller,
+        value: `${seller}`,
         inline: true
       }
     ],
