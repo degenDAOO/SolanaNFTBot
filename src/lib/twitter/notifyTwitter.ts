@@ -6,7 +6,7 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
     const hasImage = Boolean(nftSale.nftData?.image);
     const data     = hasImage ? await getImageDataFromUrl(nftSale.nftData?.image as string) : null;
     const nftName  = nftSale.nftData?.name;
-    const text     = `${nftName} has just been sold for ${nftSale.getPriceInSOL()} S◎L at ${nftSale.marketplace.name}! #SolanaNFTs #NFTSale`
+    const text     = `${nftName} was just purchased for ${nftSale.getPriceInSOL()} S◎L on ${nftSale.marketplace.name}! Now go and enroll @degenDAOO to meet your classmates.`
 
     const mediaArr: string[] = [];
     
@@ -14,9 +14,10 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
         const media = await twitterClient.v1.uploadMedia(data as Buffer, { type: 'gif' });
         mediaArr.push(media);
     }
-    return twitterClient.v1.tweet(text, {
-        media_ids: mediaArr
-    })
+
+    return await twitterClient.v2.tweet(text, {
+        media: { media_ids: mediaArr },
+      });
 }
 
 async function getImageDataFromUrl(url: string) {
