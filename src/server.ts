@@ -14,7 +14,7 @@ import { parseNFTSale } from "./lib/marketplaces";
 import { ParsedConfirmedTransaction } from "@solana/web3.js";
 import initTwitterClient from "lib/twitter";
 import notifyTwitter from "lib/twitter/notifyTwitter";
-import TwitterAPI from "twitter-api-v2";
+import { TwitterApi } from "twitter-api-v2";
 
 const port = process.env.PORT || 4000;
 
@@ -84,13 +84,13 @@ const port = process.env.PORT || 4000;
         }
       }
 
-      const tweetIt = (req.query["tweetIt"] as string) || "";
+      // const tweetIt = (req.query["tweetIt"] as string) || "";
 
-      if (tweetIt) {
-        
-        await notifyTwitter(twitterClient, nftSale);
+      // if (tweetIt) {
+      //   const twitterClient = await initTwitterClient();
+      //   await notifyTwitter(bewtwitterClient, nftSale);
 
-      }
+      // }
 
       res.send(`NFT Sales parsed: \n${JSON.stringify(nftSale)}`);
     });
