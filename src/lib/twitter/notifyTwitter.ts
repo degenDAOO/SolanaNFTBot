@@ -11,7 +11,8 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
     const mediaArr: string[] = [];
     
     if (hasImage) {
-        const media = await twitterClient.v1.uploadMedia(data as Buffer, { type: 'gif' });
+        console.log(data as Buffer);
+        const media = await twitterClient.v1.uploadMedia(data as Buffer, { type: 'png' });
         mediaArr.push(media);
     }
 
