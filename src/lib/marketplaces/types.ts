@@ -9,6 +9,7 @@ export enum SaleMethod {
 export interface Marketplace {
   name: string;
   iconUrl: string;
+  twitterHandle: string;
   programId: string;
   itemURL: (token: String) => string;
   parseNFTSale: (
