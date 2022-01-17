@@ -11,7 +11,7 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
     const mediaArr: string[] = [];
     if (Boolean(nftSale.nftData?.image)) {
         const data = await getImageDataFromUrl(nftSale.nftData?.image as string);
-        const media = await twitterClient.v1.uploadMedia(data, { type: await getDataType(data) });
+        const media = await twitterClient.v1.uploadMedia(data, { type: 'png' });
         mediaArr.push(media);
     }
     return twitterClient.v1.tweet(text, {
@@ -19,11 +19,11 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
     })
 }
 
-async function getDataType(buffer: Buffer) {
-    const { fromBuffer } = await import("file-type");
-    const result = await fromBuffer(buffer);
-    return result ? result.ext : undefined;
-}
+// async function getDataType(buffer: Buffer) {
+//     const { fromBuffer } = await import("file-type");
+//     const result = await fromBuffer(buffer);
+//     return result ? result.ext : undefined;
+// }
 
 
 async function getImageDataFromUrl(url: string) {
