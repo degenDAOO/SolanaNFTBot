@@ -5,7 +5,7 @@ import axios from 'axios';
 export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: NFTSale) {
     const nftName = nftSale.nftData?.name;
     const buyer = truncate(nftSale.buyer);
-    const text = `${nftName} was just purchased on ${nftSale.marketplace.name} ${
+    const text = `${nftName} was just purchased on ${nftSale.marketplace.twitterHandle} ${
         nftSale.method === SaleMethod.Bid ? "via bidding " : ""
     }for:\n\n${nftSale.getPriceInSOL()} S◎L!\n\ncongrats to the buyer: ${buyer} 🤝`
     const mediaArr: string[] = [];
