@@ -13,8 +13,6 @@ import notifyNFTSalesWorker from "workers/notifyNFTSalesWorker";
 import { parseNFTSale } from "./lib/marketplaces";
 import { ParsedConfirmedTransaction } from "@solana/web3.js";
 import initTwitterClient from "lib/twitter";
-import notifyTwitter from "lib/twitter/notifyTwitter";
-import TwitterApi, {TwitterApiTokens} from 'twitter-api-v2';
 
 const port = process.env.PORT || 4000;
 
@@ -82,18 +80,6 @@ const port = process.env.PORT || 4000;
         if (channel) {
           await notifyDiscordSale(discordClient, channel, nftSale);
         }
-      }
-
-      const tweetIt = (req.query["tweetIt"] as string) || "";
-      if (tweetIt) {
-        const newTwitterClient = new TwitterApi({
-          appKey: process.env.TWITTER_API_KEY,
-          appSecret: process.env.TWITTER_API_KEY_SECRET,
-          accessToken: process.env.TWITTER_ACCESS_TOKEN,
-          accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-      } as TwitterApiTokens);
-
-        await notifyTwitter(newTwitterClient, nftSale);
       }
 
       res.send(`NFT Sales parsed: \n${JSON.stringify(nftSale)}`);
