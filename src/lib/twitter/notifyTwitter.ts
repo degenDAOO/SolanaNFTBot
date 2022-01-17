@@ -1,5 +1,4 @@
 import TwitterAPI from 'twitter-api-v2';
-// import { fileTypeFromBuffer } from "file-type";
 import { NFTSale, SaleMethod } from "lib/marketplaces";
 import axios from 'axios';
 
@@ -7,7 +6,7 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
     const nftName = nftSale.nftData?.name;
     const text = `${nftName} was just purchased ${
         nftSale.method === SaleMethod.Bid ? "via bidding " : ""
-    }for ${nftSale.getPriceInSOL()} S◎L at ${nftSale.marketplace.name}! Now go and enroll to meet your classmates.`
+    }for ${nftSale.getPriceInSOL()} S◎L at ${nftSale.marketplace.name}!`
     const mediaArr: string[] = [];
     if (Boolean(nftSale.nftData?.image)) {
         const data = await getImageDataFromUrl(nftSale.nftData?.image as string);
@@ -18,13 +17,6 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
         media_ids: mediaArr
     })
 }
-
-// async function getDataType(buffer: Buffer) {
-//     const { fromBuffer } = await import("file-type");
-//     const result = await fromBuffer(buffer);
-//     return result ? result.ext : undefined;
-// }
-
 
 async function getImageDataFromUrl(url: string) {
     const img = await axios.get(url, {responseType: 'arraybuffer'});
