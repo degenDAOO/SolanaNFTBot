@@ -23,6 +23,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "file-type": "^17.1.1",
+    "queue": "^6.0.2",
     "ts-node": "^10.4.0",
     "twitter-api-v2": "^1.9.0"
   },
