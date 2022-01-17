@@ -9,7 +9,7 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
         nftSale.method === SaleMethod.Bid ? "via bidding " : ""
     }for:\n\n${nftSale.getPriceInSOL()} S◎L!\n\ncongrats to the buyer: ${buyer} 🤝`
     const mediaArr: string[] = [];
-    const taggedUsers: string[] = ["1443234316264345607"];
+    const taggedUsers: string[] = ["1443234316264345607", `${nftSale.nftData?.symbol === 'DAPE' ? "1408282519095582722" : "1435357525247922180"}`];
     if (Boolean(nftSale.nftData?.image)) {
         const data = await getImageDataFromUrl(nftSale.nftData?.image as string);
         const media = await twitterClient.v1.uploadMedia(data, { type: 'png' });
