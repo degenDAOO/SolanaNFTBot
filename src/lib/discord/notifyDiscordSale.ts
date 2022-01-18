@@ -51,7 +51,7 @@ export default async function notifyDiscordSale(
       {
         style: 5,
         label: `View Token`,
-        url: `https://solscan.io/token/${nftSale.token}`,
+        url: `https://solscan.io/token/${nftSale.token}#trades`,
         disabled: false,
         type: 2
       },
