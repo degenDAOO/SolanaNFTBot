@@ -17,12 +17,15 @@ export default async function notifyTwitter(twitterClient: TwitterAPI, nftSale: 
         const media = await twitterClient.v1.uploadMedia(data, { type: 'png' });
         mediaArr.push(media);
     }
-    return twitterClient.v2.tweet(text, {
-        media: {
-            media_ids: mediaArr,
-            tagged_user_ids: taggedUsers,
-        }
+    return twitterClient.v1.tweet(text, {
+        media_ids: mediaArr,
     })
+    // return twitterClient.v2.tweet(text, {
+    //     media: {
+    //         media_ids: mediaArr,
+    //         tagged_user_ids: taggedUsers,
+    //     }
+    // })
 }
 
 async function getImageDataFromUrl(url: string) {
