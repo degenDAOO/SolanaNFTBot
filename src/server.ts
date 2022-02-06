@@ -12,6 +12,8 @@ import { Worker } from "workers/types";
 import notifyNFTSalesWorker from "workers/notifyNFTSalesWorker";
 import { parseNFTSale } from "./lib/marketplaces";
 import { ParsedConfirmedTransaction } from "@solana/web3.js";
+import initTwitterClient from "lib/twitter";
+import notifyTwitter from "lib/twitter/notifyTwitter";
 
 const port = process.env.PORT || 4000;
 
@@ -25,6 +27,7 @@ const port = process.env.PORT || 4000;
 
     const web3Conn = newConnection();
     const discordClient = await initDiscordClient();
+    const twitterClient = await initTwitterClient();
 
     const server = express();
     server.get("/", (req, res) => {
@@ -80,6 +83,13 @@ const port = process.env.PORT || 4000;
         }
       }
 
+      const sendTweet = (req.query["tweet"] as string) || "";
+      if (sendTweet && twitterClient) {
+        await notifyTwitter(twitterClient, nftSale).catch((err) => {
+          console.error("Error occurred when notifying twitter", err);
+        });
+      }
+
       res.send(`NFT Sales parsed: \n${JSON.stringify(nftSale)}`);
     });
 
@@ -91,7 +101,7 @@ const port = process.env.PORT || 4000;
     });
 
     const workers: Worker[] = config.subscriptions.map((s) => {
-      return notifyNFTSalesWorker(discordClient, web3Conn, {
+      return notifyNFTSalesWorker(discordClient, twitterClient, web3Conn, {
         discordChannelId: s.discordChannelId,
         mintAddress: s.mintAddress,
       });
