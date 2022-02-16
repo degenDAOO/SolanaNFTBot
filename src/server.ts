@@ -105,6 +105,10 @@ import logger from "lib/logger";
       });
     });
 
+    function catchError(err: Error, platform: string) {
+      console.error(`Error occurred when notifying ${platform}`, err);
+    }
+
     initWorkers(workers);
   } catch (e) {
     logger.error(e);

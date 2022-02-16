@@ -3,7 +3,8 @@ import { parseNFTSaleOnTx } from "./helper";
 
 const alphaArt: Marketplace = {
   name: "Alpha art",
-  iconURL: "https://alpha.art/favicon.ico",
+  iconUrl: "https://alpha.art/favicon.ico",
+  twitterHandle: "@AlphaArtMarket",
   programId: ["HZaWndaNWHFDd9Dhk5pqUUtsmoBCqzb1MLu3NAh1VX6B"],
   itemURL: (token: String) => `https://alpha.art/t/${token}`,
   parseNFTSale(web3Conn, txResp): Promise<NFTSale | null> {
