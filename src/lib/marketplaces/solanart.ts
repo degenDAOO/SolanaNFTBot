@@ -3,8 +3,8 @@ import { parseNFTSaleOnTx } from "./helper";
 
 const solanart: Marketplace = {
   name: "Solanart",
-  iconUrl: "https://solanart.io/logo192.png",
-  programId: "CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz",
+  programId: ["CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz"],
+  iconURL: "https://solanart.io/logo192.png",
   itemURL: (token: String) => `https://solanart.io/search/?token=${token}`,
   parseNFTSale(web3Conn, txResp): Promise<NFTSale | null> {
     return parseNFTSaleOnTx(web3Conn, txResp, this);
