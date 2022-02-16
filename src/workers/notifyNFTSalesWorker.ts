@@ -15,11 +15,6 @@ const twitterNotifyQueue = queue({
   autostart: true,
 });
 
-const twitterNotifQueue = queue({
-  concurrency: 1,
-  autostart: true
-});
-
 export interface Project {
   mintAddress: string;
   discordChannelId: string;
@@ -91,7 +86,7 @@ export default function newWorker(
               catchError(err, "Discord");
             }
           }
-          if (twitterClient) {
+          if (twitterClient && process.env.TWITTER_ACTIVE) {
             const cb = () => {
               try {
                 return notifyTwitter(twitterClient, nftSale);
