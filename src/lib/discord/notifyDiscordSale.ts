@@ -18,10 +18,6 @@ export function getStatus() {
   return status;
 }
 
-export function truncate(str: String){
-  return str.substring(0, 6) + '...' + str.substring(str.length - 6);
-};
-
 export default async function notifyDiscordSale(
   client: Discord.Client,
   channel: TextChannel,
@@ -92,12 +88,16 @@ export default async function notifyDiscordSale(
     ],
     image: {
       url: `${nftData.image}`,
-      width: 600,
-      height: 600,
+      width: 1069,
+      height: 1069,
+    },
+    author: {
+      name: marketplace.name,
+      url: marketplace.itemURL(nftSale.token),
     },
     footer: {
       text: `Sold on ${marketplace.name}`,
-      icon_url: marketplace.iconURL,
+      icon_url: marketplace.iconUrl,
       proxy_icon_url: marketplace.itemURL(nftSale.token),
     },
   });
