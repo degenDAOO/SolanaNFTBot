@@ -1,14 +1,19 @@
-import Discord, { TextChannel } from "discord.js";
+import Discord from "discord.js";
 import TwitterAPI from "twitter-api-v2";
 import queue from "queue";
 import { Worker } from "./types";
 import { Connection, ParsedConfirmedTransaction } from "@solana/web3.js";
 import { fetchWeb3Transactions } from "lib/solana/connection";
-import { parseNFTSale } from "lib/marketplaces";
-import { fetchNFTData } from "lib/solana/NFTData";
+import { NFTSale, parseNFTSale } from "lib/marketplaces";
 import notifyDiscordSale from "lib/discord/notifyDiscordSale";
-import { fetchDiscordChannel } from "../lib/discord";
+import { fetchDiscordChannel } from "lib/discord";
 import notifyTwitter from "lib/twitter/notifyTwitter";
+import logger from "lib/logger";
+
+const twitterNotifyQueue = queue({
+  concurrency: 1,
+  autostart: true,
+});
 
 const twitterNotifQueue = queue({
   concurrency: 1,
@@ -42,10 +47,14 @@ export default function newWorker(
    * This var keeps track of the latest tx so we can optimize the rpc call
    */
   let latestParsedTx: ParsedConfirmedTransaction | undefined;
+  let latestNotification: NFTSale;
 
   return {
     async execute() {
-      const channel = await getDiscordChannel(discordClient, project.discordChannelId);
+      const channel = await getDiscordChannel(
+        discordClient,
+        project.discordChannelId
+      );
       if (!twitterClient && !channel) {
         return;
       }
@@ -64,20 +73,35 @@ export default function newWorker(
           if (!nftSale) {
             return;
           }
+
+          // Don't notify if transaction was previously notified.
+          if (latestNotification?.transaction === nftSale.transaction) {
+            logger.warn(`Duplicate tx ignored: ${nftSale.transaction}`);
+            return;
+          }
+
           // Don't notify purchases by the project's own account
           if (nftSale.buyer === project.mintAddress) {
             return;
           }
           if (channel) {
-            await notifyDiscordSale(discordClient, channel, nftSale)
-              .catch(err => catchError(err, "Discord"));
+            try {
+              await notifyDiscordSale(discordClient, channel, nftSale);
+            } catch (err) {
+              catchError(err, "Discord");
+            }
           }
           if (twitterClient) {
-            const cb = () => notifyTwitter(twitterClient, nftSale)
-            .catch(err => catchError(err, "Twitter"));
-            twitterNotifQueue.push(cb);
+            const cb = () => {
+              try {
+                return notifyTwitter(twitterClient, nftSale);
+              } catch (err) {
+                catchError(err, "Twitter");
+              }
+            };
+            twitterNotifyQueue.push(cb);
           }
-
+          latestNotification = nftSale;
           notifyAfter = nftSale.soldAt;
         },
       });
@@ -85,16 +109,16 @@ export default function newWorker(
   };
 }
 
-function catchError(err: Error, platform: string) {
-  console.error(`Error occurred when notifying ${platform}`, err);
+function catchError(err: unknown, platform: string) {
+  logger.error(`Error occurred when notifying ${platform}`, err);
 }
 
-async function getDiscordChannel(discordClient: Discord.Client, discordChannelId: string) {
+async function getDiscordChannel(
+  discordClient: Discord.Client,
+  discordChannelId: string
+) {
   if (!discordClient.isReady()) {
     return null;
   }
-  return fetchDiscordChannel(
-    discordClient,
-    discordChannelId
-  );
+  return fetchDiscordChannel(discordClient, discordChannelId);
 }

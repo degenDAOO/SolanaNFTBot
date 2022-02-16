@@ -10,7 +10,7 @@ export interface Marketplace {
   name: string;
   iconUrl: string;
   twitterHandle: string;
-  programId: string;
+  programId: string[];
   itemURL: (token: String) => string;
   parseNFTSale: (
     web3Conn: Connection,
@@ -30,6 +30,7 @@ export interface Transfer {
 export interface NFTSale {
   transaction: string;
   buyer: string;
+  seller?: string;
   method: SaleMethod;
   token: string;
   transfers: Transfer[];

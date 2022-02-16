@@ -14,8 +14,7 @@ import { parseNFTSale } from "./lib/marketplaces";
 import { ParsedConfirmedTransaction } from "@solana/web3.js";
 import initTwitterClient from "lib/twitter";
 import notifyTwitter from "lib/twitter/notifyTwitter";
-
-const port = process.env.PORT || 4000;
+import logger from "lib/logger";
 
 (async () => {
   try {
@@ -24,6 +23,7 @@ const port = process.env.PORT || 4000;
       throw result.error;
     }
     const config = loadConfig();
+    const port = process.env.PORT || 4000;
 
     const web3Conn = newConnection();
     const discordClient = await initDiscordClient();
@@ -58,7 +58,7 @@ const port = process.env.PORT || 4000;
       try {
         tx = await web3Conn.getParsedConfirmedTransaction(signature);
       } catch (e) {
-        console.log(e);
+        logger.log(e);
         res.send(`Get transaction failed, check logs for error.`);
         return;
       }
@@ -83,23 +83,19 @@ const port = process.env.PORT || 4000;
         }
       }
 
-      if (req.query['tweet']) {
-        if (twitterClient) {
-          console.log('tweet with twitter client');
-          await notifyTwitter(twitterClient, nftSale)
-          .catch(err => catchError(err, "Twitter"));
-        }
+      const sendTweet = (req.query["tweet"] as string) || "";
+      if (sendTweet && twitterClient) {
+        await notifyTwitter(twitterClient, nftSale).catch((err) => {
+          logger.error("Error occurred when notifying twitter", err);
+        });
       }
-
 
       res.send(`NFT Sales parsed: \n${JSON.stringify(nftSale)}`);
     });
 
     server.listen(port, (err?: any) => {
       if (err) throw err;
-      console.log(
-        `> Ready on http://localhost:${port} - env ${process.env.NODE_ENV}`
-      );
+      logger.log(`Ready on http://localhost:${port}`);
     });
 
     const workers: Worker[] = config.subscriptions.map((s) => {
@@ -115,7 +111,7 @@ const port = process.env.PORT || 4000;
 
     initWorkers(workers);
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     process.exit(1);
   }
 })();
