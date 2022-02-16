@@ -2,6 +2,7 @@ import TwitterAPI from 'twitter-api-v2';
 import { NFTSale, SaleMethod } from "lib/marketplaces";
 import axios from 'axios';
 import CoinGecko from 'coingecko-api';
+import logger from "lib/logger";
 
 export default async function notifyTwitter(
   twitterClient: TwitterAPI, 
@@ -21,9 +22,13 @@ export default async function notifyTwitter(
         const media = await twitterClient.v1.uploadMedia(data, { type: 'png' });
         mediaArr.push(media);
     }
+
+    logger.log(`Notified Twitter about: ${nftName}`);
+
     return twitterClient.v1.tweet(text, {
         media_ids: mediaArr,
     })
+    
     // return twitterClient.v2.tweet(text, {
     //     media: {
     //         media_ids: mediaArr,
