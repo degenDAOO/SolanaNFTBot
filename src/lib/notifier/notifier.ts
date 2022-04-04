@@ -57,7 +57,7 @@ export async function newNotifierFactory(config: Config, nQueue: queue) {
           });
         }
 
-        if (twitterClient) {
+        if (twitterClient && process.env.TWITTER_ACTIVE) {
           queueNotification(nQueue, Platform.Twitter, async () => {
             await notifyTwitter(twitterClient, data);
           });
