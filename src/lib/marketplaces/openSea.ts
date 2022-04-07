@@ -4,6 +4,7 @@ import { parseNFTSaleOnTx } from "./helper";
 const solsea: Marketplace = {
   name: "OpenSea",
   programId: ["hausS13jsjafwWwGqZTUQRmWyvyxn9EQpqMwV1PBBmk"],
+  twitterHandle: "@OpenSea",
   iconURL: "https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.png",
   itemURL: (token: String) => `https://opensea.io/assets/solana/${token}`,
   parseNFTSale(web3Conn, txResp): Promise<NFTSale | null> {

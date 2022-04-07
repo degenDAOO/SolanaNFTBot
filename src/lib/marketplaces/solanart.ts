@@ -3,7 +3,7 @@ import { parseNFTSaleOnTx } from "./helper";
 
 const solanart: Marketplace = {
   name: "Solanart",
-  iconUrl: "https://solanart.io/logo192.png",
+  iconUrl: "https://solanart.io/logo.png",
   twitterHandle: "@SolanartNFT",
   programId: ["CJsLwbP1iu5DuUikHEJnLfANgKy6stB2uFgvBBHoyxwz"],
   itemURL: (token: String) => `https://solanart.io/search/?token=${token}`,
