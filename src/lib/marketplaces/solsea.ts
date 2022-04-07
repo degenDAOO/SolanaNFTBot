@@ -8,7 +8,7 @@ const solsea: Marketplace = {
   programId: ["617jbWo616ggkDxvW1Le8pV38XLbVSyWY8ae6QUmGBAU"],
   itemURL: (token: String) => `https://solsea.io/nft/${token}`,
   parseNFTSale(web3Conn, txResp): Promise<NFTSale | null> {
-    return parseNFTSaleOnTx(web3Conn, txResp, this);
+    return parseNFTSaleOnTx(web3Conn, txResp, this, 0);
   },
 };
 
