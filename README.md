@@ -141,6 +141,13 @@ It needs to be one of the creator addresses:
 
 _Note: Avoid personal addresses because it could detect unwanted sales._
 
+##### Watch multiple addresses
+You can watch multiple addresses at once by using a comma between addresses:
+```bash
+SUBSCRIPTION_MINT_ADDRESS=add123,add1235
+```
+This feature reduces the need to run multiple containers in production.
+
 #### Twitter variables
 
 __Experimental:__
@@ -183,6 +190,7 @@ Here are some options:
 - [x] [Alpha Art](https://alpha.art/)
 - [x] [Exchange Art](https://exchange.art/)
 - [x] [Solsea](https://solsea.io/)
+- [x] [OpenSea](https://opensea.io/)
 
 ### Adding new marketplace
 

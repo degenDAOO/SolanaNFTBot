@@ -1,6 +1,6 @@
 {
   "name": "@milktoast-lab/SolNFTBot",
-  "version": "0.13.0",
+  "version": "0.15.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "license": "MIT",
@@ -14,14 +14,15 @@
     "start": "NODE_PATH=./dist/src NODE_ENV=production node dist/src/server.js",
     "test": "jest --no-watchman",
     "lint-format": "prettier -c ./src/**/*.ts",
-    "fix-format": "prettier -w ./src/**/*.ts"
+    "fix-format": "prettier -w ./src/**/*.ts",
+    "transaction": "ts-node --project tsconfig.json -r dotenv/config ./src/cli/get-confirmed-transaction.ts"
   },
   "dependencies": {
     "@discordjs/builders": "^0.8.1",
     "axios": "^0.25.0",
     "coingecko-api": "^1.0.10",
     "discord.js": "^13.2.0",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "file-type": "^17.1.1",
     "queue": "^6.0.2",
