@@ -19,7 +19,7 @@ const marketplaces: Marketplace[] = [
   exchangeArt,
   solsea,
   openSea,
-  rarible,
+  // rarible,
 ];
 
 export default marketplaces;
