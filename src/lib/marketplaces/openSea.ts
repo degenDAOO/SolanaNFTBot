@@ -3,10 +3,7 @@ import { parseNFTSaleOnTx } from "./helper";
 
 const openSea: Marketplace = {
   name: "OpenSea",
-  programId: [
-    "hausS13jsjafwWwGqZTUQRmWyvyxn9EQpqMwV1PBBmk",
-    "8mcjXbJ8j4VryYFNpcBCFS37Au8zVYU53WTVaruJWcKt"
-  ],
+  programId: ["8mcjXbJ8j4VryYFNpcBCFS37Au8zVYU53WTVaruJWcKt"],
   twitterHandle: "@opensea",
   iconUrl: "https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.png",
   itemURL: (token: String) => `https://opensea.io/assets/solana/${token}`,
