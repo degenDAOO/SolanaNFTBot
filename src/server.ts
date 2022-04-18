@@ -81,10 +81,10 @@ import queue from "queue";
         );
         return;
       }
-      if (config.discordBotToken) {
+      const channelId = (req.query["channelId"] as string) || "";
+      if (channelId && config.discordBotToken) {
         const discordClient = await initDiscordClient(config.discordBotToken);
         if (discordClient) {
-          const channelId = (req.query["channelId"] as string) || "";
           await notifyDiscordSale(discordClient, channelId, nftSale);
         }
       }
