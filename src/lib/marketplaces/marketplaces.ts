@@ -5,8 +5,9 @@ import solanart from "./solanart";
 import alphaArt from "./alphaArt";
 import exchangeArt from "./exchangeArt";
 import solsea from "./solsea";
-import openSea from "./openSea";
-import rarible from "./rarible";
+import auctionHouse from "./auctionHouse";
+// import openSea from "./openSea";
+// import rarible from "./rarible";
 
 /**
  * These are the list of marketplaces that we check for notifications
@@ -18,7 +19,8 @@ const marketplaces: Marketplace[] = [
   alphaArt,
   exchangeArt,
   solsea,
-  openSea,
+  auctionHouse,
+  // openSea,
   // rarible,
 ];
 

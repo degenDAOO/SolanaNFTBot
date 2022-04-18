@@ -10,6 +10,7 @@ import { Marketplace, NFTSale, SaleMethod, Transfer } from "./types";
 import { LamportPerSOL } from "../solana";
 import { fetchNFTData } from "../solana/NFTData";
 import solanart from "./solanart";
+import auctionHouse from "./auctionHouse";
 
 export function getTransfersFromInnerInstructions(
   innerInstructions: any
@@ -146,6 +147,31 @@ function getPriceInLamportForSolanaArt(
   return transferValues.highestTransfer - transferValues.buyerTransfer;
 }
 
+function getPriceInLamportForAuctionHouse(
+  { preBalances, postBalances }: ParsedConfirmedTransactionMeta,
+  accountKeys: ParsedMessageAccount[],
+): number {
+  const transferValues = accountKeys.reduce(
+    (transferValues, current, currentIndex, arr) => {
+      const value = Math.abs(
+        postBalances[currentIndex] - preBalances[currentIndex]
+      );
+
+      transferValues.highestTransfer = Math.max(
+        transferValues.highestTransfer,
+        value
+      );
+      return transferValues;
+    },
+    {
+      highestTransfer: 0,
+    }
+  );
+  return transferValues.highestTransfer;
+}
+
+
+
 /**
  * Guessing the seller from transfers by assuming the seller always get the biggest
  * cut of the revenue from the sale
@@ -259,9 +285,20 @@ export async function parseNFTSaleOnTx(
       );
     }
   } else {
-    priceInLamport = transfers.reduce<number>((prev, current) => {
-      return prev + current.revenue.amount;
-    }, 0);
+    if (marketplace === auctionHouse) {
+      /**
+       * AuctionHouse transaction might have the obvious sale price in a different block
+       * Which is why this method needs a special condition for extracting the price
+       */
+      priceInLamport = getPriceInLamportForAuctionHouse(
+        txResp.meta,
+        txResp.transaction.message.accountKeys,
+      );
+    } else {
+      priceInLamport = transfers.reduce<number>((prev, current) => {
+        return prev + current.revenue.amount;
+      }, 0);
+    }
   }
   if (!priceInLamport) {
     return null;
